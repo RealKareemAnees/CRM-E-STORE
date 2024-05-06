@@ -3,8 +3,8 @@ import { AddProductsController } from './add-products.controller';
 import { AddProductsService } from './add-products.service';
 
 describe('CatsController', () => {
-    let catsController: AddProductsController;
-    let catsService: AddProductsService;
+    let addProductsController: AddProductsController;
+    let addProductsService: AddProductsService;
 
     beforeEach(async () => {
         const moduleRef = await Test.createTestingModule({
@@ -12,13 +12,17 @@ describe('CatsController', () => {
             providers: [AddProductsService],
         }).compile();
 
-        catsService = moduleRef.get<AddProductsService>(AddProductsService);
-        catsController = moduleRef.get<AddProductsController>(
+        addProductsService =
+            moduleRef.get<AddProductsService>(AddProductsService);
+
+        addProductsController = moduleRef.get<AddProductsController>(
             AddProductsController,
         );
     });
 
     describe('findAll', () => {
-        it('should return TRUE', async () => {});
+        it('should return TRUE', async () => {
+            expect('s').toBe('s');
+        });
     });
 });

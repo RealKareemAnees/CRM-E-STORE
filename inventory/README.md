@@ -8,4 +8,6 @@
 
 -   updates products
 
--   then it update realtime databases on any change
+-   it calls the mongodb manager to update the database
+
+-   it calls the memcached manager to update state

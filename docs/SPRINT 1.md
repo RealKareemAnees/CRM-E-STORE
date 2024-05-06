@@ -65,10 +65,61 @@
     - elasticSearch for text search
 
   - **macro services**
-    - Inventory manager
-    - Users manager
-    - search manager
-    - products-data API
+    - mongodb-controller
+    - memcached-controller
+    - elastic-search
+    - inventory-manager
+    - users-manager
+    - search-manager
+    - products-API
     - boot-loader
-    - cart manager
+    - carts-manager
     - logger
+
+## DB design
+
+- **data stores**
+
+  - MongoDB for static storage
+  - Memcached for in-memory storage
+  - elasticSearch for text searching
+
+- **schemas**
+
+  - products
+    ```typescript
+    interface Product {
+      id: number;
+      title: string;
+      description: string;
+      category: string;
+      imageLink: string;
+      oldPrice: number;
+      newPrice: number;
+      galleryLinks: string[];
+    }
+    ```
+  - users
+
+    ```typescript
+    interface User {
+      id: number;
+      username: string;
+      email: string;
+      password: string;
+      cart: CartItem[];
+    }
+
+    interface CartItem {
+      productId: number;
+      quantity: number;
+    }
+    ```
+
+  - categories
+    ```typescript
+    interface Category {
+      id: number;
+      name: string;
+    }
+    ```

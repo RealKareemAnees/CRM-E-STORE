@@ -7,6 +7,6 @@ export class AddProductsController {
 
     @Post()
     async addProducts() {
-        await this.addProductsService;
+        await this.addProductsService.addProduct({});
     }
 }
