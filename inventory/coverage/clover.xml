@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1715001785711" clover="3.2.0">
-  <project timestamp="1715001785711" name="All files">
-    <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0" elements="3" coveredelements="0" complexity="0" loc="2" ncloc="2" packages="1" files="1" classes="1"/>
-    <file name="add-products.service.ts" path="/home/kareem/PROJECTS/CRM-E-STORE/inventory/src/add-products/add-products.service.ts">
-      <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <line num="1" count="0" type="stmt"/>
-      <line num="4" count="0" type="stmt"/>
-    </file>
+<coverage generated="1715289075699" clover="3.2.0">
+  <project timestamp="1715289075699" name="All files">
+    <metrics statements="20" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0" elements="22" coveredelements="0" complexity="0" loc="20" ncloc="20" packages="2" files="3" classes="3"/>
+    <package name="src">
+      <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="app.module.ts" path="C:\Users\kareem\Projects\CRM-E-STORE\inventory\src\app.module.ts">
+        <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.add-products">
+      <metrics statements="13" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <file name="add-products.controller.ts" path="C:\Users\kareem\Projects\CRM-E-STORE\inventory\src\add-products\add-products.controller.ts">
+        <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+      </file>
+      <file name="add-products.module.ts" path="C:\Users\kareem\Projects\CRM-E-STORE\inventory\src\add-products\add-products.module.ts">
+        <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>

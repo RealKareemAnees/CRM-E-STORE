@@ -6,6 +6,5 @@ export class AddProductsService {
     constructor(private mongodbHandlerService: MongodbHandlerService) {}
 
     async addProduct(details) {
-        const results = await this.mongodbHandlerService.addProduct(details);
     }
 }
