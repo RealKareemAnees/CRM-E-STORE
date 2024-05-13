@@ -7,9 +7,12 @@ export class AddProductsService {
   constructor(private MongodbClientService: MongodbClientService) {}
 
   async addProduct(product: ProductInterface) {
-    await this.MongodbClientService.connect();
-    const productID = await this.MongodbClientService.addProduct(product);
-    await this.MongodbClientService.disconnect();
+    const client = await this.MongodbClientService.connect();
+    const productID = await this.MongodbClientService.addProduct(
+      client,
+      product,
+    );
+    await client.close();
     return productID;
   }
 }

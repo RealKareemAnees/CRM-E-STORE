@@ -9,6 +9,7 @@ import {
 import { AddProductsService } from './add-products.service';
 import { ProductDto } from 'src/schemas/product.dto';
 import { HttpExceptionFilter } from 'src/filters/error.filter';
+import { SuccessfulOperations } from '../../messages/operations';
 
 @Controller('add-products')
 export class AddProductsController {
@@ -20,11 +21,12 @@ export class AddProductsController {
   async addProduct(@Body() product: ProductDto) {
     try {
       const productID = await this.addProductsService.addProduct(product);
+      const message = SuccessfulOperations.addProduct(productID);
       return {
-        message: `new product with id ${productID}  has added successfully`,
+        message,
       };
     } catch (error) {
-      throw new error();
+      throw new Error(error.message);
     }
   }
 }
