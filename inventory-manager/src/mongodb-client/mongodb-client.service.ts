@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Db, MongoClient, MongoClientOptions, ObjectId } from 'mongodb';
-import * as mongoDBConstants from '../../constants/mongodb.constants';
+import * as mongoDBConstants from '../constants/mongodb.constants';
 import { ConfigService } from '@nestjs/config';
 import {
   ProductInterface,
   ProductWithIDInterface,
-} from '../../interfaces/Product.interface';
-import { SystemError, SilentSystemError } from 'src/errors/system.error';
+} from '../interfaces/Product.interface';
+import { SilentSystemError, SystemError } from 'src/errors/SystemErrors';
 
 @Injectable()
 export class MongodbClientService {
@@ -111,6 +111,24 @@ export class MongodbClientService {
         return productId;
       } else {
         throw new Error('Product not found or not deleted');
+      }
+    } catch (error) {
+      throw new SystemError(error.message);
+    }
+  }
+
+  async Log(client: MongoClient, collection: string, info: object) {
+    try {
+      const db = client.db(this.dbName);
+
+      const results = await db
+        .collection(this.configService.get(collection))
+        .insertOne(info);
+
+      if (results.acknowledged) {
+        return results.insertedId.toString();
+      } else {
+        throw new Error('Product is not saved to db');
       }
     } catch (error) {
       throw new SystemError(error.message);

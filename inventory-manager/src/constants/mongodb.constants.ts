@@ -4,3 +4,6 @@ export const connectTimeoutMS = 'CONNECTIO_TIMEOUT'; // Example value, adjust as
 export const minPoolSize = 'MINPOOLSIZE'; // Example value, adjust as needed
 export const maxPoolSize = 'MAXPOOLSIZE'; // Example value, adjust as needed
 export const products_collection = 'PRODUCTS_COLLECTION';
+
+export const error_logs = 'ERROR_LOGS';
+export const operation_logs = 'OPERATION_LOGS';

@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AddProductsModule } from './modules/add-product/add-products.module';
-import { MongodbClientModule } from './modules/mongodb-client/mongodb-client.module';
+import { AddProductsModule } from './modules/add-products.module';
+import { MongodbClientModule } from './mongodb-client/mongodb-client.module';
 import { ConfigModule } from '@nestjs/config';
-import { UpdateProductModule } from './modules/update-product/update-product.module';
-import { DeleteProductModule } from './modules/delete-product/delete-product.module';
+import { UpdateProductModule } from './modules/update-product.module';
+import { DeleteProductModule } from './modules/delete-product.module';
+import { MongodbClientService } from './mongodb-client/mongodb-client.service';
+import { LoggerProvider } from './providers/logger.provider';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { DeleteProductModule } from './modules/delete-product/delete-product.mod
     DeleteProductModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [MongodbClientService, LoggerProvider],
+  exports: [MongodbClientService, LoggerProvider],
 })
 export class AppModule {}

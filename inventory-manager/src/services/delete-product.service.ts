@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { productID } from 'src/interfaces/Product.interface';
-import { MongodbClientService } from 'src/modules/mongodb-client/mongodb-client.service';
+import { MongodbClientService } from 'src/mongodb-client/mongodb-client.service';
 
 @Injectable()
 export class DeleteProductService {
