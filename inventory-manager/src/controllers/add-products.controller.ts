@@ -11,7 +11,7 @@ import { ProductDto } from 'src/DTOs/product.dto';
 import { HttpExceptionFilter } from 'src/filters/HttpException.filter';
 import { addProductMessage } from 'src/messages-generators/operationsMessages.generator';
 
-@Controller('add-products')
+@Controller('add-product')
 export class AddProductsController {
   constructor(private addProductsService: AddProductsService) {}
 
