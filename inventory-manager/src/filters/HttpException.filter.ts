@@ -5,12 +5,11 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { LoggerProvider } from 'src/providers/logger.provider';
 import { SystemError } from '../errors/SystemErrors';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private logger: LoggerProvider) {}
+  constructor() {}
   catch(exception: SystemError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -23,10 +22,5 @@ export class HttpExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
     });
-
-    if (exception.log) {
-      const errorDetails: any = exception.errorDetails;
-      this.logger.error(errorDetails);
-    }
   }
 }

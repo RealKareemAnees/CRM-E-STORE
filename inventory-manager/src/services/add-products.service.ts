@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { operation_logs } from 'src/constants/mongodb.constants';
 import { ProductInterface } from 'src/interfaces/Product.interface';
-import { addProductMessage } from 'src/messages-generators/operationsMessages.generator';
-import { MongodbClientService } from 'src/mongodb-client/mongodb-client.service';
+import { addProductMessage } from 'src/providers/operationsMessages';
+import { MongodbClientProvider } from 'src/providers/mongodb-client.provider';
 import { LoggerProvider } from 'src/providers/logger.provider';
 
 @Injectable()
 export class AddProductsService {
   constructor(
-    private MongodbClientService: MongodbClientService,
+    private MongodbClientProvider: MongodbClientProvider,
     private loggerProvider: LoggerProvider,
   ) {}
 
   async addProduct(product: ProductInterface) {
-    const client = await this.MongodbClientService.connect();
-    const productID = await this.MongodbClientService.addProduct(
+    const client = await this.MongodbClientProvider.connect();
+    const productID = await this.MongodbClientProvider.addProduct(
       client,
       product,
     );

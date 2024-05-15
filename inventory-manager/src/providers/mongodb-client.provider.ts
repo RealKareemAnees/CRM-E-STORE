@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Db, MongoClient, MongoClientOptions, ObjectId } from 'mongodb';
+import { MongoClient, MongoClientOptions, ObjectId } from 'mongodb';
 import * as mongoDBConstants from '../constants/mongodb.constants';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -9,7 +9,7 @@ import {
 import { SilentSystemError, SystemError } from 'src/errors/SystemErrors';
 
 @Injectable()
-export class MongodbClientService {
+export class MongodbClientProvider {
   dbName: any;
   Mongoclient: MongoClient;
   M: any;

@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { UpdateProductFailedError } from 'src/errors/MongodbErrors';
 import { ProductWithIDInterface } from 'src/interfaces/Product.interface';
-import { MongodbClientService } from 'src/mongodb-client/mongodb-client.service';
+import { MongodbClientProvider } from 'src/providers/mongodb-client.provider';
 
 @Injectable()
 export class UpdateProductService {
-  constructor(private MongodbClientService: MongodbClientService) {}
+  constructor(private MongodbClientProvider: MongodbClientProvider) {}
 
   async updateProduct(product: ProductWithIDInterface) {
-    const client = await this.MongodbClientService.connect();
-    const productID = await this.MongodbClientService.updateProduct(
-      client,
-      product,
-    );
-    await client.close();
-    return productID;
+    try {
+      const client = await this.MongodbClientProvider.connect();
+      const productID = await this.MongodbClientProvider.updateProduct(
+        client,
+        product,
+      );
+      await client.close();
+      return productID;
+    } catch (error) {
+      throw new UpdateProductFailedError(error);
+    }
   }
 }

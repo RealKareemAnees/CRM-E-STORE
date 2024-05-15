@@ -1,52 +1,77 @@
 import { MongodbErrorErrorDetails } from 'src/interfaces/MongodbErrorDetails.interface';
 import { SystemError } from './SystemErrors';
-import { HttpStatus } from '@nestjs/common';
-import { mongodbErrorMessage } from 'src/messages-generators/errorMessages.generator';
+import { HttpStatus, Injectable } from '@nestjs/common';
 
-export class MongodbError extends SystemError {
+// Base MongoDB Error class extending SystemError
+class MongodbError extends SystemError {
   constructor(
-    response: string = 'internal server error',
-    status: number = 500,
+    response: string = 'Internal server error',
+    status: number = HttpStatus.INTERNAL_SERVER_ERROR,
     log?: boolean,
     errorDetails?: MongodbErrorErrorDetails | object,
   ) {
-    response = mongodbErrorMessage(response);
     super(response, status, log, errorDetails);
   }
 }
 
-export class AddProductFailed extends MongodbError {
+// Specific error class for failed product addition
+class AddProductFailedError extends MongodbError {
   constructor(
-    status: number = 500,
     log: boolean = true,
-    response: string = 'failed to add product',
+    response: string = 'Failed to add product',
     errorDetails?: MongodbErrorErrorDetails | object,
   ) {
-    response = mongodbErrorMessage(response);
-    super(response, status, log, errorDetails);
+    super(response, HttpStatus.INTERNAL_SERVER_ERROR, log, errorDetails);
   }
 }
 
-export class UpdateProductFailed extends MongodbError {
+// Specific error class for failed product update
+class UpdateProductFailedError extends MongodbError {
   constructor(
-    status: number = HttpStatus.BAD_REQUEST,
+    errorDetails: MongodbErrorErrorDetails | object,
     log: boolean = true,
-    response: string = 'failed to update product',
-    errorDetails?: MongodbErrorErrorDetails | object,
+    response: string = 'Failed to update product',
   ) {
-    response = mongodbErrorMessage(response);
-    super(response, status, log, errorDetails);
+    super(response, HttpStatus.BAD_REQUEST, log, errorDetails);
   }
 }
 
-export class deleteProductFailed extends MongodbError {
+// Specific error class for failed product deletion
+class DeleteProductFailedError extends MongodbError {
   constructor(
-    status: number = HttpStatus.GONE,
+    errorDetails: MongodbErrorErrorDetails | object,
     log: boolean = true,
-    response: string = 'failed to delete product',
+    response: string = 'Failed to delete product',
+  ) {
+    super(response, HttpStatus.GONE, log, errorDetails);
+  }
+}
+
+@Injectable()
+export class MongodbErrors {
+  constructor() {}
+
+  getAddProductFailedError(
+    log: boolean = true,
+    response: string = 'Failed to add product',
     errorDetails?: MongodbErrorErrorDetails | object,
   ) {
-    response = mongodbErrorMessage(response);
-    super(response, status, log, errorDetails);
+    return new AddProductFailedError(log, response, errorDetails);
+  }
+
+  getUpdateProductFailedError(
+    errorDetails: MongodbErrorErrorDetails | object,
+    log: boolean = true,
+    response: string = 'Failed to update product',
+  ) {
+    return new UpdateProductFailedError(errorDetails, log, response);
+  }
+
+  getDeleteProductFailedError(
+    errorDetails: MongodbErrorErrorDetails | object,
+    log: boolean = true,
+    response: string = 'Failed to delete product',
+  ) {
+    return new DeleteProductFailedError(errorDetails, log, response);
   }
 }

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { productID } from 'src/interfaces/Product.interface';
-import { MongodbClientService } from 'src/mongodb-client/mongodb-client.service';
+import { MongodbClientProvider } from 'src/providers/mongodb-client.provider';
 
 @Injectable()
 export class DeleteProductService {
-  constructor(private MongodbClientService: MongodbClientService) {}
+  constructor(private MongodbClientProvider: MongodbClientProvider) {}
 
   async deleteProduct(productID: string) {
-    const client = await this.MongodbClientService.connect();
-    const results = await this.MongodbClientService.deleteProduct(
+    const client = await this.MongodbClientProvider.connect();
+    const results = await this.MongodbClientProvider.deleteProduct(
       client,
       productID,
     );

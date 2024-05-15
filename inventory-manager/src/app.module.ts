@@ -1,25 +1,42 @@
 import { Module } from '@nestjs/common';
-import { AddProductsModule } from './modules/add-products.module';
-import { MongodbClientModule } from './mongodb-client/mongodb-client.module';
 import { ConfigModule } from '@nestjs/config';
-import { UpdateProductModule } from './modules/update-product.module';
-import { DeleteProductModule } from './modules/delete-product.module';
-import { MongodbClientService } from './mongodb-client/mongodb-client.service';
+
+import { MongodbClientProvider } from './providers/mongodb-client.provider';
 import { LoggerProvider } from './providers/logger.provider';
+import { AddProductsController } from './controllers/add-products.controller';
+import { UpdateProductController } from './controllers/update-product.controller';
+import { DeleteProductController } from './controllers/delete-product.controller';
+import { AddProductsService } from './services/add-products.service';
+import { UpdateProductService } from './services/update-product.service';
+import { DeleteProductService } from './services/delete-product.service';
+import { OperationMessagesProvider } from './providers/operationsMessages';
+import { ErrorMessagesProvider } from './providers/errorMessages';
+import { MongodbErrors } from './errors/MongodbErrors';
+import { SystemErrors } from './errors/SystemErrors';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['main.env', '/configs/mongodb.env'],
+      envFilePath: ['main.env', './configs/mongodb.env'],
       isGlobal: true,
     }),
-    AddProductsModule,
-    MongodbClientModule,
-    UpdateProductModule,
-    DeleteProductModule,
   ],
-  controllers: [],
-  providers: [MongodbClientService, LoggerProvider],
-  exports: [MongodbClientService, LoggerProvider],
+  controllers: [
+    AddProductsController,
+    UpdateProductController,
+    DeleteProductController,
+  ],
+  providers: [
+    AddProductsService,
+    UpdateProductService,
+    DeleteProductService,
+    MongodbClientProvider,
+    LoggerProvider,
+    OperationMessagesProvider,
+    ErrorMessagesProvider,
+    MongodbErrors,
+    SystemErrors,
+  ],
+  exports: [],
 })
 export class AppModule {}
