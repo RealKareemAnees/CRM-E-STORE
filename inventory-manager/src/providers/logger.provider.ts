@@ -1,36 +1,105 @@
 import { Injectable } from '@nestjs/common';
-import { error_logs, operation_logs } from 'src/constants/mongodb.constants';
+import { ObjectId } from 'mongodb';
+import {
+  error_logs,
+  failed_operation_logs,
+  operation_logs,
+  operations_names,
+} from 'src/constants/mongodb.constants';
+import { LoggerMessageInterface } from 'src/interfaces/LoggerMessageDetails.interface';
+import { ErrorLogDetails } from 'src/interfaces/ErrorLogDetails.interface';
 import { MongodbClientProvider } from 'src/providers/mongodb-client.provider';
-
-export type Details = {
-  cause: string;
-};
 
 @Injectable()
 export class LoggerProvider {
   constructor(private mongodbClientProvider: MongodbClientProvider) {}
 
-  async error(details: Details, collection: string = error_logs) {
+  async error(details: object, collection: string = error_logs) {
+    console.error('Logging error:', details);
     const client = await this.mongodbClientProvider.connect();
-    await this.mongodbClientProvider.Log(client, collection, details);
+    await this.mongodbClientProvider.log(client, collection, details);
     await this.mongodbClientProvider.disconnect(client);
   }
 
-  operations = {
-    productAdded: async (details: object) => {
-      const client = await this.mongodbClientProvider.connect();
-      await this.mongodbClientProvider.Log(client, operation_logs, details);
-      await this.mongodbClientProvider.disconnect(client);
+  errors = {
+    AddProductFailed: async (
+      details?: object,
+      collection: string = failed_operation_logs,
+    ) => {
+      const object: ErrorLogDetails = {
+        operation: operations_names.add_product,
+        date: Date.now(),
+        details: details,
+      };
+
+      await this.error(object, collection);
     },
-    productDeleted: async (details: object) => {
+
+    DeleteProductFailed: async (
+      productID: string,
+      details?: object,
+      collection: string = failed_operation_logs,
+    ) => {
+      const object: ErrorLogDetails = {
+        operation: operations_names.delete_product,
+        date: Date.now(),
+        productID,
+        details: details,
+      };
+
+      await this.error(object, collection);
+    },
+
+    UpdateProductFailed: async (
+      productID: string,
+      details?: object,
+      collection: string = failed_operation_logs,
+    ) => {
+      const object: ErrorLogDetails = {
+        operation: operations_names.update_product,
+        date: Date.now(),
+        productID,
+        details: details,
+      };
+
+      await this.error(object, collection);
+    },
+  };
+
+  operations = {
+    productAdded: async (productID: string | ObjectId) => {
+      const details: LoggerMessageInterface = {
+        operation: operations_names.add_product,
+        productID,
+        timeAdded: Date.now(),
+      };
+      console.log('Logging operation: product added', details);
       const client = await this.mongodbClientProvider.connect();
-      await this.mongodbClientProvider.Log(client, operation_logs, details);
+      await this.mongodbClientProvider.log(client, operation_logs, details);
       await this.mongodbClientProvider.disconnect(client);
     },
 
-    productUpdated: async (details: object) => {
+    productDeleted: async (productID: string | ObjectId) => {
+      const details: LoggerMessageInterface = {
+        operation: operations_names.delete_product,
+        productID,
+        timeAdded: Date.now(),
+      };
+      console.log('Logging operation: product deleted', details);
       const client = await this.mongodbClientProvider.connect();
-      await this.mongodbClientProvider.Log(client, operation_logs, details);
+      await this.mongodbClientProvider.log(client, operation_logs, details);
+      await this.mongodbClientProvider.disconnect(client);
+    },
+
+    productUpdated: async (productID: string | ObjectId) => {
+      const details: LoggerMessageInterface = {
+        operation: operations_names.update_product,
+        productID,
+        timeAdded: Date.now(),
+      };
+      console.log('Logging operation: product updated', details);
+      const client = await this.mongodbClientProvider.connect();
+      await this.mongodbClientProvider.log(client, operation_logs, details);
       await this.mongodbClientProvider.disconnect(client);
     },
   };

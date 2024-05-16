@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class OperationMessagesProvider {
-  constructor(parameters) {}
+  constructor() {}
 
   addProductMessage(productID?: string | ObjectId): string {
     const defaultMessage: string = 'FailedError to add Product [-_-]';

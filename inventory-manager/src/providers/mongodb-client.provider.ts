@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { MongoClient, MongoClientOptions, ObjectId } from 'mongodb';
 import * as mongoDBConstants from '../constants/mongodb.constants';
 import { ConfigService } from '@nestjs/config';
@@ -6,19 +6,27 @@ import {
   ProductInterface,
   ProductWithIDInterface,
 } from '../interfaces/Product.interface';
-import { SilentSystemError, SystemError } from 'src/errors/SystemErrors';
+import {
+  AddProductFailedException,
+  UpdateProductFailedException,
+  DeleteProductFailedException,
+  DBException,
+} from 'src/exceptions/DBExceptions';
 
 @Injectable()
 export class MongodbClientProvider {
-  dbName: any;
+  dbName: string;
   Mongoclient: MongoClient;
-  M: any;
 
   constructor(private configService: ConfigService) {
-    const uri = this.configService.get(mongoDBConstants.MONGODBURI);
-    this.dbName = this.configService.get(mongoDBConstants.DB_NAME);
-    const minPoolSize = this.configService.get(mongoDBConstants.minPoolSize);
-    const maxPoolSize = this.configService.get(mongoDBConstants.maxPoolSize);
+    const uri = this.configService.get<string>(mongoDBConstants.MONGODBURI);
+    this.dbName = this.configService.get<string>(mongoDBConstants.DB_NAME);
+    const minPoolSize = this.configService.get<number>(
+      mongoDBConstants.minPoolSize,
+    );
+    const maxPoolSize = this.configService.get<number>(
+      mongoDBConstants.maxPoolSize,
+    );
 
     const options: MongoClientOptions = {
       minPoolSize,
@@ -28,110 +36,125 @@ export class MongodbClientProvider {
     this.Mongoclient = new MongoClient(uri, options);
   }
 
-  async connect() {
+  async connect(): Promise<MongoClient> {
     try {
-      const client = await this.Mongoclient.connect();
-      return client;
+      return await this.Mongoclient.connect();
     } catch (error) {
-      throw new SilentSystemError(error.message);
+      throw new DBException(
+        'Failed to connect to the database',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        error,
+      );
     }
   }
 
-  async disconnect(client: MongoClient) {
+  async disconnect(client: MongoClient): Promise<void> {
     try {
       await client.close();
     } catch (error) {
-      throw new SilentSystemError(error.message);
+      throw new DBException(
+        'Failed to disconnect from the database',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        error,
+      );
     }
   }
 
-  async addProduct(client: MongoClient, product: ProductInterface) {
+  async addProduct(
+    client: MongoClient,
+    product: ProductInterface,
+  ): Promise<string> {
     try {
       const db = client.db(this.dbName);
-
       const results = await db
         .collection(
-          this.configService.get(mongoDBConstants.products_collection),
+          this.configService.get<string>(mongoDBConstants.products_collection),
         )
         .insertOne(product);
 
       if (results.acknowledged) {
         return results.insertedId.toString();
       } else {
-        throw new Error('Product is not saved to db');
+        throw new AddProductFailedException(
+          new Error('Product is not saved to db'),
+        );
       }
     } catch (error) {
-      throw new SystemError(error.message);
+      throw new AddProductFailedException(error);
     }
   }
 
-  async updateProduct(client: MongoClient, product: ProductWithIDInterface) {
+  async updateProduct(
+    client: MongoClient,
+    product: ProductWithIDInterface,
+  ): Promise<string> {
     try {
       const db = client.db(this.dbName);
-
       const results = await db
         .collection(
-          this.configService.get(mongoDBConstants.products_collection),
+          this.configService.get<string>(mongoDBConstants.products_collection),
         )
-        .updateOne(
-          { _id: new ObjectId(product._id) }, // Filter: Find the product by its ID
-          {
-            $set: {
-              // Update: Set the new values for the product
-              title: product.title,
-              description: product.description,
-              newPrice: product.newPrice,
-            },
-          },
-        );
+        .updateOne({ _id: new ObjectId(product._id) }, { $set: product });
 
       if (results.acknowledged && results.modifiedCount > 0) {
         return product._id;
       } else {
-        throw new Error('Product hasnt updated');
+        throw new UpdateProductFailedException(
+          new Error('Product has not been updated'),
+        );
       }
     } catch (error) {
-      throw new SystemError(error.message);
+      throw new UpdateProductFailedException(error);
     }
   }
 
-  async deleteProduct(client: MongoClient, productId: string) {
+  async deleteProduct(client: MongoClient, productId: string): Promise<string> {
     try {
       const db = client.db(this.dbName);
-
       const results = await db
         .collection(
-          this.configService.get(mongoDBConstants.products_collection),
+          this.configService.get<string>(mongoDBConstants.products_collection),
         )
-        .deleteOne(
-          { _id: new ObjectId(productId) }, // Filter: Find the product by its ID
-        );
+        .deleteOne({ _id: new ObjectId(productId) });
 
       if (results.acknowledged && results.deletedCount > 0) {
         return productId;
       } else {
-        throw new Error('Product not found or not deleted');
+        throw new DeleteProductFailedException(
+          new Error('Product not found or not deleted'),
+        );
       }
     } catch (error) {
-      throw new SystemError(error.message);
+      throw new DeleteProductFailedException(error);
     }
   }
 
-  async Log(client: MongoClient, collection: string, info: object) {
+  async log(
+    client: MongoClient,
+    collection: string,
+    info: object,
+  ): Promise<string> {
     try {
       const db = client.db(this.dbName);
-
       const results = await db
-        .collection(this.configService.get(collection))
+        .collection(this.configService.get<string>(collection))
         .insertOne(info);
 
       if (results.acknowledged) {
         return results.insertedId.toString();
       } else {
-        throw new Error('Product is not saved to db');
+        throw new DBException(
+          'Log is not saved to db',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          new Error('Log is not saved to db'),
+        );
       }
     } catch (error) {
-      throw new SystemError(error.message);
+      throw new DBException(
+        'Error with MongoDB logging',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        error,
+      );
     }
   }
 }

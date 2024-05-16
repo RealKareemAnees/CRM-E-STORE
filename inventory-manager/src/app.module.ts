@@ -3,16 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 
 import { MongodbClientProvider } from './providers/mongodb-client.provider';
 import { LoggerProvider } from './providers/logger.provider';
-import { AddProductsController } from './controllers/add-products.controller';
-import { UpdateProductController } from './controllers/update-product.controller';
-import { DeleteProductController } from './controllers/delete-product.controller';
-import { AddProductsService } from './services/add-products.service';
-import { UpdateProductService } from './services/update-product.service';
-import { DeleteProductService } from './services/delete-product.service';
 import { OperationMessagesProvider } from './providers/operationsMessages';
-import { ErrorMessagesProvider } from './providers/errorMessages';
-import { MongodbErrors } from './errors/MongodbErrors';
-import { SystemErrors } from './errors/SystemErrors';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -21,21 +14,12 @@ import { SystemErrors } from './errors/SystemErrors';
       isGlobal: true,
     }),
   ],
-  controllers: [
-    AddProductsController,
-    UpdateProductController,
-    DeleteProductController,
-  ],
+  controllers: [AppController],
   providers: [
-    AddProductsService,
-    UpdateProductService,
-    DeleteProductService,
+    AppService,
     MongodbClientProvider,
     LoggerProvider,
     OperationMessagesProvider,
-    ErrorMessagesProvider,
-    MongodbErrors,
-    SystemErrors,
   ],
   exports: [],
 })

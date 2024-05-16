@@ -29,30 +29,6 @@ export class ProductDto {
   newPrice: number;
 }
 
-export class ProductWithIDDto {
-  @IsString()
-  @IsNotEmpty()
-  _id: ObjectId;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(6)
-  @MaxLength(100)
-  title: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(20)
-  @MaxLength(200)
-  description: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @Min(10)
-  @Max(10000)
-  newPrice: number;
-}
-
 export class productID {
   @IsString()
   @IsNotEmpty()

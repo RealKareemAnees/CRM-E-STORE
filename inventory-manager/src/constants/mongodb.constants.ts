@@ -7,3 +7,10 @@ export const products_collection = 'PRODUCTS_COLLECTION';
 
 export const error_logs = 'ERROR_LOGS';
 export const operation_logs = 'OPERATION_LOGS';
+export const failed_operation_logs = 'FAILED_OPERATIO_LOGS';
+
+export const operations_names = {
+  add_product: 'add-product',
+  update_product: 'update-product',
+  delete_product: 'delete-product',
+};
