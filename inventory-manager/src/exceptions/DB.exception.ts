@@ -1,4 +1,4 @@
-import { SystemException } from './SystemErrors';
+import { SystemException } from './System.exception';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
 export class DBException extends SystemException {

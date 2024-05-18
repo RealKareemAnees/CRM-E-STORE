@@ -5,10 +5,10 @@ import {
   failed_operation_logs,
   operation_logs,
   operations_names,
-} from 'src/constants/mongodb.constants';
-import { LoggerMessageInterface } from 'src/interfaces/LoggerMessageDetails.interface';
-import { ErrorLogDetails } from 'src/interfaces/ErrorLogDetails.interface';
-import { MongodbClientProvider } from 'src/providers/mongodb-client.provider';
+} from '..//constants/mongodb.constants';
+import { LoggerMessageInterface } from '..//interfaces/LoggerMessageDetails.interface';
+import { ErrorLogDetails } from '..//interfaces/ErrorLogDetails.interface';
+import { MongodbClientProvider } from '..//providers/mongodb-client.provider';
 
 @Injectable()
 export class LoggerProvider {

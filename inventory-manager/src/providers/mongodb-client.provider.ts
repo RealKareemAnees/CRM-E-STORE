@@ -11,7 +11,7 @@ import {
   UpdateProductFailedException,
   DeleteProductFailedException,
   DBException,
-} from 'src/exceptions/DBExceptions';
+} from '../exceptions/DB.exception';
 
 @Injectable()
 export class MongodbClientProvider {

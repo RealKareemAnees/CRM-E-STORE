@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import {
   ProductInterface,
   ProductWithIDInterface,
-} from 'src/interfaces/Product.interface';
-import { MongodbClientProvider } from 'src/providers/mongodb-client.provider';
-import { MongoClient, ObjectId } from 'mongodb';
+} from './interfaces/Product.interface';
+import { MongodbClientProvider } from './providers/mongodb-client.provider';
+import { MongoClient } from 'mongodb';
 import { LoggerProvider } from './providers/logger.provider';
+import { SystemException } from './exceptions/System.exception';
 
 @Injectable()
 export class AppService {
@@ -14,7 +15,7 @@ export class AppService {
     private loggerProvider: LoggerProvider,
   ) {}
 
-  async addProduct(product: ProductInterface): Promise<string | ObjectId> {
+  async addProduct(product: ProductInterface): Promise<string> {
     let client: MongoClient;
     try {
       client = await this.mongodbClientProvider.connect();
@@ -69,7 +70,7 @@ export class AppService {
 
       return deletedProductID;
     } catch (error) {
-      await this.loggerProvider.errors.UpdateProductFailed(
+      await this.loggerProvider.errors.DeleteProductFailed(
         productId,
         error.cause,
       );

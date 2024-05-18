@@ -12,11 +12,11 @@ import {
   Param,
   Put,
 } from '@nestjs/common';
-import { ProductDto } from 'src/DTOs/product.dto';
-import { HttpExceptionFilter } from 'src/filters/HttpException.filter';
-import { LoggerProvider } from 'src/providers/logger.provider';
+import { ProductDto } from './DTOs/product.dto';
+import { HttpExceptionFilter } from './filters/HttpException.filter';
 import { AppService } from './app.service';
 import { OperationMessagesProvider } from './providers/operationsMessages';
+import { AddProductResponseInterface } from './interfaces/responseObjects.interface';
 
 @Controller()
 export class AppController {
@@ -29,12 +29,16 @@ export class AppController {
   @UsePipes(new ValidationPipe())
   @UseFilters(new HttpExceptionFilter())
   @HttpCode(HttpStatus.CREATED)
-  async addProduct(@Body() product: ProductDto) {
+  async addProduct(
+    @Body() product: ProductDto,
+  ): Promise<AddProductResponseInterface> {
     try {
       const productID = await this.appService.addProduct(product);
-      const response =
-        this.operationMessagesProvider.addProductMessage(productID);
-      return { message: response, productID: productID };
+      const response: AddProductResponseInterface = {
+        message: this.operationMessagesProvider.addProductMessage(productID),
+        productID: productID,
+      };
+      return response;
     } catch (error) {
       const { message, status } = error;
       throw new HttpException(message, status);
