@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import {
   ProductInterface,
   ProductWithIDInterface,
-} from './interfaces/Product.interface';
-import { MongodbClientProvider } from './providers/mongodb-client.provider';
+} from '../interfaces/Product.interface';
+import { MongodbClientProvider } from '../providers/mongodb-client.provider';
 import { MongoClient } from 'mongodb';
-import { LoggerProvider } from './providers/logger.provider';
-import { SystemException } from './exceptions/System.exception';
+import { LoggerProvider } from '../providers/logger.provider';
+import { SystemException } from '../exceptions/System.exception';
 
 @Injectable()
 export class AppService {

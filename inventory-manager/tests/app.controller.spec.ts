@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from '../src/app.controller';
-import { AppService } from '../src/app.service';
+import { AppController } from '../src/controllers/CUD.controller';
+import { AppService } from '../src/services/CUD.service';
 import { OperationMessagesProvider } from '../src/providers/operationsMessages.provider';
 import { ProductDto } from '../src/DTOs/product.dto';
 import {

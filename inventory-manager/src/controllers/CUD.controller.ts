@@ -12,15 +12,15 @@ import {
   Param,
   Put,
 } from '@nestjs/common';
-import { ProductDto } from './DTOs/product.dto';
-import { HttpExceptionFilter } from './filters/HttpException.filter';
-import { AppService } from './app.service';
-import { OperationMessagesProvider } from './providers/operationsMessages.provider';
+import { ProductDto } from '../DTOs/product.dto';
+import { HttpExceptionFilter } from '../filters/HttpException.filter';
+import { AppService } from '../services/CUD.service';
+import { OperationMessagesProvider } from '../providers/operationsMessages.provider';
 import {
   AddProductResponseInterface,
   DeleteProductResponseInterface,
   UpdateProductResponseInterface,
-} from './interfaces/responseObjects.interface';
+} from '../interfaces/responseObjects.interface';
 
 @Controller()
 export class AppController {
