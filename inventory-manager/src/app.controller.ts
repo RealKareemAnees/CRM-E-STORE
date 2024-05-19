@@ -18,6 +18,7 @@ import { AppService } from './app.service';
 import { OperationMessagesProvider } from './providers/operationsMessages.provider';
 import {
   AddProductResponseInterface,
+  DeleteProductResponseInterface,
   UpdateProductResponseInterface,
 } from './interfaces/responseObjects.interface';
 
@@ -77,8 +78,11 @@ export class AppController {
   async deleteProduct(@Param('id') id: string) {
     try {
       const deletedProductID = await this.appService.deleteProduct(id);
-      const response = this.operationMessagesProvider.deleteProductMessage;
-      return { message: response, productID: deletedProductID };
+      const response: DeleteProductResponseInterface = {
+        message:
+          this.operationMessagesProvider.deleteProductMessage(deletedProductID),
+      };
+      return response;
     } catch (error) {
       const { message, status } = error;
       throw new HttpException(message, status);

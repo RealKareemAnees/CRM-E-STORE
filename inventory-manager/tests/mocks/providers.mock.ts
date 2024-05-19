@@ -31,10 +31,20 @@ export const mockMongodbClientProvider = {
     .fn()
     // First call: Successful update
     .mockImplementationOnce(() => 'updatedProductID')
-    // Second call: Failure with DBException
+    // Second call: Failure with UpdateProductFailedException
     .mockImplementationOnce(() => {
       throw new UpdateProductFailedException(
         new Error('Product has not been updated'),
+      );
+    }),
+  deleteProduct: jest
+    .fn()
+    // First call: Successful deletion
+    .mockImplementationOnce(() => 'deletedProductID')
+    // Second call: Failure with DBException
+    .mockImplementationOnce(() => {
+      throw new UpdateProductFailedException(
+        new Error('Product has not been deleted'),
       );
     }),
 };

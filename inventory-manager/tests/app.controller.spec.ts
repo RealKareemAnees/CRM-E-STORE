@@ -17,6 +17,7 @@ import {
 } from './mocks/providers.mock';
 import { SystemExceptionResponseMessageInterface } from '../src/interfaces/SystemExceptionResponseMessage.interface';
 import { ProductInterface } from '../src/interfaces/Product.interface';
+import { HttpException } from '@nestjs/common';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -84,6 +85,81 @@ describe('AppController', () => {
 
       const result = await appController.updateProduct(productID, product);
       expect(result).toEqual(expected);
+    });
+
+    it('should return validation error response', async () => {
+      const product = {};
+      const productID = 'validProductID';
+      const expected: SystemExceptionResponseMessageInterface = {
+        message: expect.any(String),
+        error: undefined,
+      };
+
+      try {
+        await appController.updateProduct(
+          productID,
+          product as ProductInterface,
+        );
+      } catch (err) {
+        const results: HttpException = err;
+        const response: SystemExceptionResponseMessageInterface = {
+          message: results.message,
+          error: results.getResponse()['message'],
+        };
+        expect(response).toEqual(expected);
+      }
+    });
+
+    it('should return system error response', async () => {
+      const product = productMock;
+      const productID = 'exampleProductID';
+      const expected: SystemExceptionResponseMessageInterface = {
+        message: expect.any(String),
+        error: undefined,
+      };
+
+      try {
+        await appController.updateProduct(
+          productID,
+          product as ProductInterface,
+        );
+      } catch (err) {
+        const results: HttpException = err;
+        const response: SystemExceptionResponseMessageInterface = {
+          message: results.message,
+        };
+        expect(response).toEqual(expected);
+      }
+    });
+  });
+
+  describe('deleteProduct', () => {
+    it('should return deleted product ID (success case)', async () => {
+      const productID = 'validProductID';
+
+      const expected = {
+        message: expect.any(String),
+      };
+
+      const result = await appController.deleteProduct(productID);
+      expect(result).toEqual(expected);
+    });
+
+    it('should return error response when product ID is invalid', async () => {
+      const productID = 'invalidProductID';
+      const expected: SystemExceptionResponseMessageInterface = {
+        message: expect.any(String),
+      };
+
+      try {
+        await appController.deleteProduct(productID);
+      } catch (err) {
+        const results: HttpException = err;
+        const response: SystemExceptionResponseMessageInterface = {
+          message: results.message,
+        };
+        expect(response).toEqual(expected);
+      }
     });
   });
 });
