@@ -3,6 +3,11 @@
 - all it does it to add or delete or update products
 - it it the only one who can edit the products in the DB
 
+## notes
+
+- if any changes made please test it and provide changes here
+- changelogs are provided via CHANGELOG.md in rootdir
+
 ## schemas
 
 ```typescript
@@ -32,19 +37,8 @@ export interface ProductInterface {
   newPrice: number;
 }
 
-export interface ProductWithIDInterface {
-  _id: string;
-  title: string;
-  description: string;
-  newPrice: number;
-}
-
 export interface productID {
   _id: string;
-}
-
-export interface SystemErrorErrorDetails {
-  cause?: string | object | [];
 }
 
 export interface ErrorLogDetails extends SystemErrorErrorDetails {

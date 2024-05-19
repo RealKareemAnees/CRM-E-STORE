@@ -1,6 +1,5 @@
-import { SystemErrorErrorDetails } from './SystemerrorDetail.interface';
-
-export interface ErrorLogDetails extends SystemErrorErrorDetails {
+export interface ErrorLogDetails {
+  cause?: string | object | [];
   operation: string;
   productID?: string;
   date?: any;

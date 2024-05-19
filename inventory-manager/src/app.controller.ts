@@ -16,7 +16,10 @@ import { ProductDto } from './DTOs/product.dto';
 import { HttpExceptionFilter } from './filters/HttpException.filter';
 import { AppService } from './app.service';
 import { OperationMessagesProvider } from './providers/operationsMessages.provider';
-import { AddProductResponseInterface } from './interfaces/responseObjects.interface';
+import {
+  AddProductResponseInterface,
+  UpdateProductResponseInterface,
+} from './interfaces/responseObjects.interface';
 
 @Controller()
 export class AppController {
@@ -56,9 +59,12 @@ export class AppController {
         _id: id,
       });
 
-      const response =
-        this.operationMessagesProvider.updateProductMessage(updatedProductID);
-      return { message: response, productID: updatedProductID };
+      const response: UpdateProductResponseInterface = {
+        message:
+          this.operationMessagesProvider.updateProductMessage(updatedProductID),
+        updatedProductID: updatedProductID,
+      };
+      return response;
     } catch (error) {
       const { message, status } = error;
       throw new HttpException(message, status);
