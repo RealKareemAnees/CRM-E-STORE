@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OperationMessagesProvider } from './providers/operationsMessages';
+import { OperationMessagesProvider } from './providers/operationsMessages.provider';
 import { ProductDto } from './DTOs/product.dto';
 import { AddProductResponseInterface } from './interfaces/responseObjects.interface';
 import { MongodbClientProvider } from './providers/mongodb-client.provider';

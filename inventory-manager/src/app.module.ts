@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { MongodbClientProvider } from './providers/mongodb-client.provider';
 import { LoggerProvider } from './providers/logger.provider';
-import { OperationMessagesProvider } from './providers/operationsMessages';
+import { OperationMessagesProvider } from './providers/operationsMessages.provider';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 

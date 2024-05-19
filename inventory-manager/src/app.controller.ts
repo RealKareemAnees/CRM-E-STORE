@@ -15,7 +15,7 @@ import {
 import { ProductDto } from './DTOs/product.dto';
 import { HttpExceptionFilter } from './filters/HttpException.filter';
 import { AppService } from './app.service';
-import { OperationMessagesProvider } from './providers/operationsMessages';
+import { OperationMessagesProvider } from './providers/operationsMessages.provider';
 import { AddProductResponseInterface } from './interfaces/responseObjects.interface';
 
 @Controller()
